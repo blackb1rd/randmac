@@ -1,19 +1,25 @@
 Script random mac address follow as OUI
 =======================================
 
+This script used for genarating random mac address and changing the mac address.
+
 How to use?
 ===========
 
 Installing the script
-`./randmac --install`
+
+    ./randmac --install
 
 Updating the OUI
-`randmac -u`
+
+    randmac -u
 
 Let start the random address and changing the mac address
-`randmac -r`
+
+    randmac -r
 
 Need to remove script?
-`randmac --uninstall
+
+    randmac --uninstall
 
 **Note** : This is still experimental.
