@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATHOUI=/etc/randmac
+PATHOUI=.
 
 usage() {
   echo "Usage: $0 [options]"
@@ -17,32 +17,24 @@ update_oui() {
 }
 
 randmac() {
-
   if [ -f "$PATHOUI/mac.txt" ]; then
     hexchars="0123456789ABCDEF"
 
     OUI=$(shuf -n1 $PATHOUI/mac.txt | sed -e 's/\t.*//')
-    NIC=$(for i in {1..6} ; do echo -n ${hexchars:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g')
+    NICETH=$(for i in {1..6} ; do echo -n ${hexchars:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g')
+    NICWLAN=$(for i in {1..6} ; do echo -n ${hexchars:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g')
 
     /etc/init.d/networking stop
-    ifconfig eth0 hw ether $OUI$NIC
+    ifconfig eth0 down
+    ifconfig wlan0 down
+    ifconfig eth0 hw ether $OUI$NICETH
+    ifconfig wlan0 hw ether $OUI$NICWLAN
+    ifconfig eth0 up
+    ifconfig wlan0 up
     /etc/init.d/networking start
   else
     echo "File $PATHOUI/mac.txt does not exist, please update OUI first"
   fi
-}
-
-install() {
-  # Get the current directory
-  current_dir="$( cd "$( dirname "$0" )" && pwd )"
-
-  mkdir -p $PATHOUI
-  cp $current_dir/$0 /usr/bin
-}
-
-uninstall() {
-  rm -rf $PATHOUI
-  rm /usr/bin/$0
 }
 
 # Check argument
