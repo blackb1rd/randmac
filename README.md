@@ -7,11 +7,9 @@ How to use?
 ===========
 
 1. Updating the OUI
-
 ```bash
 randmac -u
 ```
-
 2. Starting random mac address and changing the mac address
 ```
 randmac -r
