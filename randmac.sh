@@ -12,8 +12,10 @@ usage() {
 }
 
 update_oui() {
-  wget http://standards-oui.ieee.org/oui.txt -o $PATHOUI/oui.txt
+  echo "${txtbld}$(tput setaf 1)[-] Updating OUI, please wait...$(tput sgr0)"
+  wget -v http://standards-oui.ieee.org/oui.txt -O $PATHOUI/oui.txt
   cat $PATHOUI/oui.txt |grep "(hex)" |sed -e 's/^\s*//' -e 's/\([0-9A-F]\)-\([0-9A-F]*\)-\([0-9A-F]\)/\1\:\2:\3/' -e 's/\s*(hex)\t//' > $PATHOUI/mac.txt
+  echo "${txtbld}$(tput setaf 4)[>] OUI updated successfully!$(tput sgr0)"
 }
 
 randmac() {
@@ -43,12 +45,6 @@ case $1 in
                           exit
                           ;;
   -u | --update)          update_oui
-                          exit
-                          ;;
-  --install)              install
-                          exit
-                          ;;
-  --uninstall)            uninstall
                           exit
                           ;;
   -h | --help )           usage
